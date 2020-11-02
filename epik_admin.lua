@@ -146,7 +146,7 @@ for i = 1, #CMDs do
 	local newcmd = Example:Clone()
 	newcmd.Parent = CMDsH
 	newcmd.Visible = true
-	newcmd.Text = CMDs[i].NAME
+	newcmd.Text = CMDs[i].Name
 	newcmd.Name = 'CMD'
 end
 
@@ -314,12 +314,12 @@ CommandApi:AddCommand("kill", {"k"}, function(args)
 		ME.Character:WaitForChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = true })
 		if v.Character:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R6 then
 			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]:WaitForChild("EffectCloud"), "Name", "Torso")
-			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Torso"]:FindFirstChildOfClass("Weld"):Destroy())
+			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Torso"]:FindFirstChild("Weld"):Destroy())
 			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Torso"], "Parent", v.Character)
 			ME.Character:WaitForChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = false })
 		else
 			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]:WaitForChild("EffectCloud"), "Name", "UpperTorso")
-			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"]:FindFirstChildOfClass("Weld"):Destroy())
+			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"]:FindFirstChild("Weld"):Destroy())
 			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"], "Parent", v.Character)   
 			ME.Character:WaitForChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = false })         
 		end
@@ -328,22 +328,19 @@ end)
 
 CommandApi:AddCommand("lkill", "lk", function(args)
 	for _, v in pairs(RoLife:GetPlayers(args[1])) do
-		ME.Character:WaitForChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = true })
 		Connections.lkill = true
 		while Connections.lkill do
+		    ME.Character:WaitForChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = true })
 			if v.Character:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R6 then
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]:WaitForChild("EffectCloud"), "Name", "Torso")
-				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Torso"]:FindFirstChildOfClass("Weld"):Destroy())
+				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Torso"]:FindFirstChild("Weld"):Destroy())
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Torso"], "Parent", v.Character)
-				ME.Character:WaitForChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = false })
-				wait()
 			else
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]:WaitForChild("EffectCloud"), "Name", "UpperTorso")
-				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"]:FindFirstChildOfClass("Weld"):Destroy())
+				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"]:FindFirstChild("Weld"):Destroy())
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"], "Parent", v.Character)   
-				ME.Character:WaitForChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = false }) 
-				wait()        
 			end
+			wait()
 		end
 	end
 end)
