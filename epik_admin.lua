@@ -310,9 +310,13 @@ CommandApi:AddCommand("ac", function(args)
 end)
 
 CommandApi:AddCommand("cloud", function()
-	ME.Backpack:FindFirstChild("PompousTheCloud").Parent = ME.Character
-	ME.Character:WaitForChild("PompousTheCloud"):Destroy()
-	workspace.GiveTool:FireServer(1798417, "PompousTheCloud")
+	if not ME.Backpack:FindFirstChild("PompousTheCloud") then
+		workspace.GiveTool:FireServer(getgenv().GamepassId, "PompousTheCloud")
+	else
+		ME.Backpack:FindFirstChild("PompousTheCloud").Parent = ME.Character
+		ME.Character:WaitForChild("PompousTheCloud"):Destroy()
+		workspace.GiveTool:FireServer(1798417, "PompousTheCloud")
+	end
 end)
 
 CommandApi:AddCommand("kill", {"k"}, function(args)
@@ -358,6 +362,12 @@ end)
 CommandApi:AddCommand("unlkill", {"unlk"}, function()
 	Connections.lkill = false
 	ME.Character:FindFirstChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = false })
+end)
+
+CommandApi:AddCommand("fakeac", function()
+    ME.Backpack:FindFirstChild("PompousTheCloud").Parent = ME.Character
+    RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["ServerControl"], "Name", "ServerControI")
+    RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "Parent", game.StarterPack)
 end)
 
 CommandApi:AddCommand("rejoin", {"rj"}, function()
