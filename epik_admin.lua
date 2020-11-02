@@ -347,6 +347,7 @@ end)
 
 CommandApi:AddCommand("unlkill", {"unlk"}, function()
 	Connections.lkill = false
+	ME.Character:FindFirstChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = false })
 end)
 
 CommandApi:AddCommand("rejoin", {"rj"}, function()
