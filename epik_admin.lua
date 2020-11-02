@@ -298,7 +298,7 @@ CommandApi:AddCommand("loadtool", {"ltool"}, function()
 			v:Stop()
 		end
 	end
-	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Mesh"], "MeshId", "rbxassetid://0")
+	RoLife:FireServer("PompousTheCloud", ME.Character:FindFirstChild("PompousTheCloud")["Handle"]["Mesh"], "MeshId", "rbxassetid://0")
 end)
 
 CommandApi:AddCommand("ac", function(args)
