@@ -168,6 +168,12 @@ cmdbar:GetPropertyChangedSignal("Text"):Connect(function()
 	end
 end)
 -- // Main Script \\ --
+game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
+	Text = "Loading...",
+	Font = Enum.Font.SourceSans,
+	Color = Color3.fromRGB(255, 255, 255),
+	TextSize = 18
+})
 CommandApi:Initialize(",")
 game:GetService("ReplicatedStorage").ToggleStrollers:FireServer(false)
 print("Strollers Disabled")
@@ -353,3 +359,10 @@ end)
 CommandApi:AddCommand("rejoin", {"rj"}, function()
 	game:GetService("TeleportService"):Teleport(game.PlaceId)
 end)
+
+game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
+	Text = "Epik Admin loaded!",
+	Font = Enum.Font.SourceSans,
+	Color = Color3.fromRGB(255, 255, 255),
+	TextSize = 18
+})
