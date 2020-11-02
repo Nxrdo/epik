@@ -321,11 +321,13 @@ CommandApi:AddCommand("kill", {"k"}, function(args)
 		if v.Character:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R6 then
 			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]:WaitForChild("EffectCloud"), "Name", "Torso")
 			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Torso"]:FindFirstChild("Weld"):Destroy())
+			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Torso"], "CanCollide", false)
 			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Torso"], "Parent", v.Character)
 			ME.Character:WaitForChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = false })
 		else
 			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]:WaitForChild("EffectCloud"), "Name", "UpperTorso")
 			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"]:FindFirstChild("Weld"):Destroy())
+			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"], "CanCollide", false)
 			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"], "Parent", v.Character)   
 			ME.Character:WaitForChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = false })         
 		end
@@ -340,10 +342,12 @@ CommandApi:AddCommand("lkill", "lk", function(args)
 			if v.Character:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R6 then
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]:WaitForChild("EffectCloud"), "Name", "Torso")
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Torso"]:FindFirstChild("Weld"):Destroy())
+				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Torso"], "CanCollide", false)
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Torso"], "Parent", v.Character)
 			else
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]:WaitForChild("EffectCloud"), "Name", "UpperTorso")
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"]:FindFirstChild("Weld"):Destroy())
+				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"], "CanCollide", false)
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"], "Parent", v.Character)   
 			end
 			wait()
