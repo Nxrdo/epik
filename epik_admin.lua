@@ -1,7 +1,9 @@
 --[[
 	Epik admin by Nardo#4127 / NardoSusky20
 	Changelog: [
-		Nothing to see here :smile:
+		11/3/2020: [
+			Added 'glock'
+		]
 	]
 ]]
 
@@ -128,18 +130,25 @@ cmdbar.FocusLost:Connect(function()
 	CommandApi:Parse(cmdbar.Text)
 end)
 
+CMDs[#CMDs + 1] = {Name = ' ~~~~~~~~ Players ~~~~~~~~'}
+CMDs[#CMDs + 1] = {Name = ' ac <server | player, name>'}
+CMDs[#CMDs + 1] = {Name = ' kill <player> / k <player>'}
+CMDs[#CMDs + 1] = {Name = ' lkill <player> / lk <player>'}
+CMDs[#CMDs + 1] = {Name = ' ~~~~~~~~~ Local ~~~~~~~~~'}
+CMDs[#CMDs + 1] = {Name = ' antjail <on | off>'}
 CMDs[#CMDs + 1] = {Name = ' billboard'}
-CMDs[#CMDs + 1] = {Name = ' bbvis <on, id | off>'}
 CMDs[#CMDs + 1] = {Name = ' mute / m'}
 CMDs[#CMDs + 1] = {Name = ' reset / re'}
 CMDs[#CMDs + 1] = {Name = ' bypass'}
 CMDs[#CMDs + 1] = {Name = ' loadtool / ltool'}
-CMDs[#CMDs + 1] = {Name = ' ac <server | player, name>'}
-CMDs[#CMDs + 1] = {Name = ' cloud'}
-CMDs[#CMDs + 1] = {Name = ' kill <player> / k <player>'}
 CMDs[#CMDs + 1] = {Name = ' rejoin / rj'}
-CMDs[#CMDs + 1] = {Name = ' lkill <player> / lk <player>'}
 CMDs[#CMDs + 1] = {Name = ' unlkill / unlk'}
+CMDs[#CMDs + 1] = {Name = ' unblind'}
+CMDs[#CMDs + 1] = {Name = ' ~~~~~~ Visualizers ~~~~~~'}
+CMDs[#CMDs + 1] = {Name = ' bbvis <on, id | off>'}
+CMDs[#CMDs + 1] = {Name = ' ~~~~~~~~~ Gears ~~~~~~~~~'}
+CMDs[#CMDs + 1] = {Name = ' cloud'}
+CMDs[#CMDs + 1] = {Name = ' glock'}
 wait()
 
 for i = 1, #CMDs do
@@ -306,6 +315,13 @@ CommandApi:AddCommand("ac", function(args)
 		workspace.GuiEvent:FireServer(".")
 		RoLife:FireServer("PompousTheCloud", ME.Character:WaitForChild(".")["."], "Name", "StarterHumanoid")
 		RoLife:FireServer("PompousTheCloud", ME.Character["."]["StarterHumanoid"], "Parent", game:GetService("StarterPlayer"))
+		ME.Character["."]:Destroy()
+	elseif args[1] == "player" then
+		for _, v in pairs(RoLife:GetPlayers(args[2])) do
+			workspace.GuiEvent:FireServer(v.Name)
+			RoLife:FireServer("PompousTheCloud", ME.Character:WaitForChild(v.Name), "Parent", workspace)
+			RoLife:FireServer("PompousTheCloud", ME.Character["Head"], "Transparency", 0)
+		end
 	end
 end)
 
@@ -342,7 +358,7 @@ CommandApi:AddCommand("lkill", "lk", function(args)
 	for _, v in pairs(RoLife:GetPlayers(args[1])) do
 		Connections.lkill = true
 		while Connections.lkill do
-		    ME.Character:WaitForChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = true })
+			ME.Character:WaitForChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = true })
 			if v.Character:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R6 then
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]:WaitForChild("EffectCloud"), "Name", "Torso")
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Torso"]:FindFirstChild("Weld"):Destroy())
@@ -362,6 +378,106 @@ end)
 CommandApi:AddCommand("unlkill", {"unlk"}, function()
 	Connections.lkill = false
 	ME.Character:FindFirstChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = false })
+end)
+
+CommandApi:AddCommand("goto", function(args)
+	for _, v in pairs(RoLife:GetPlayers(args[1])) do
+		ME.Character:FindFirstChild("HumanoidRootPart").CFrame = v.Character.HumanoidRootPart.CFrame
+	end
+end)
+
+CommandApi:AddCommand("unblind", function()
+	for _, v in pairs(ME.PlayerGui:GetDescendants()) do
+		if v:IsA("TextLabel") then
+			v:Destroy()
+		end
+	end
+end)
+
+CommandApi:AddCommand("glock", function()
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Mesh"], "MeshId", "rbxassetid://5082833624")
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Mesh"], "TextureId", "rbxassetid://5082836430")
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Mesh"], "Scale", Vector3.new(1, 1, 1))
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Mesh"], "Offset", Vector3.new(0, 0, 0))
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["LocalScript"], "Disabled", true)
+						
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "GripForward", Vector3.new(0, 0, 1))
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "GripPos", Vector3.new(0, -0.25, -0.07))
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "GripRight", Vector3.new(-1, 0, 0))
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "GripUp", Vector3.new(0, 1, 0))
+						
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Wind"], "MaxDistance", "100000")
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Wind"], "PlaybackSpeed", "1")
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Wind"], "Volume", "1")
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Wind"], "EmitterSize", "1000")
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Wind"], "SoundId", "rbxassetid://240718012")
+						
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "ToolTip", "Glock-18")
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "CanBeDropped", true)
+	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "Name", "Glock-18")
+	wait()
+	local Mouse = ME:GetMouse()
+
+	ME:GetMouse().Button1Down:Connect(function()
+		if ME.Character:FindFirstChild("Glock-18") then
+			if Mouse.Target.Parent:FindFirstChild("Head") or Mouse.Target.Parent:FindFirstChild("HumanoidRootPart") then
+				local Anim = Instance.new("Animation")
+				Anim.AnimationId = "rbxassetid://95383980"
+				local AnimLoader = ME.Character:FindFirstChild("Humanoid"):LoadAnimation(Anim)
+				AnimLoader:Play()
+				AnimLoader:AdjustSpeed(1)
+				game:GetService("ReplicatedStorage"):FindFirstChild("AvatarEditor"):FindFirstChild("HatHandle"):FireServer(14129625)
+				if Mouse.Target.Parent.Humanoid.RigType == Enum.HumanoidRigType.R6 then
+					RoLife:FireServer("Glock-18", ME.Character:WaitForChild("14129625")["Handle"]["Mesh"], "MeshId", "0")
+					RoLife:FireServer("Glock-18", ME.Character["14129625"]["Handle"], "Name", "Torso")
+					RoLife:FireServer("Glock-18", ME.Character["14129625"]["Torso"], "Parent", Mouse.Target.Parent)
+					ME.Character["14129625"]:Destroy()
+					ME.Character["PhantomMask"]:Destroy()
+					RoLife:FireServer("Glock-18", ME.Character["Glock-18"]["Handle"]["Wind"], "Playing", true)
+					wait(1)
+					RoLife:FireServer("Glock-18", ME.Character["Glock-18"]["Handle"]["Wind"]:Pause())
+				else
+					RoLife:FireServer("Glock-18", ME.Character:WaitForChild("14129625")["Handle"]["Mesh"], "MeshId", "0")
+					RoLife:FireServer("Glock-18", ME.Character["14129625"]["Handle"], "Name", "UpperTorso")
+					RoLife:FireServer("Glock-18", ME.Character["14129625"]["UpperTorso"], "Parent", Mouse.Target.Parent)
+					ME.Character["14129625"]:Destroy()
+					ME.Character["PhantomMask"]:Destroy()
+					RoLife:FireServer("Glock-18", ME.Character["Glock-18"]["Handle"]["Wind"], "Playing", true)
+					wait(1)
+					RoLife:FireServer("Glock-18", ME.Character["Glock-18"]["Handle"]["Wind"]:Pause())
+				end
+			end
+		end
+	end)
+end)
+
+CommandApi:AddCommand("antijail", function(args)
+	if args[1] == "on" then
+		function Antijail()
+			local Hats = {}
+			for _, v in pairs(ME.Charater:GetDescendants()) do
+				if v:IsA("Accessory") then
+					Hats[v.Name] = true
+				end
+			end
+			Connections['Antijail'] = ME.Character.DescendantAdded:Connect(function(v)
+				for _, v in pairs(ME.Character:GetDescendants()) do
+					if v:IsA("Accessory") and not Hats[v.Name] then
+						v:Destroy()
+					end
+				end
+			end)
+		end
+		
+		Antijail()
+	elseif args[1] == "off" then
+		Connections['Antijail']:Disconnect()
+		game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
+			Font = Enum.Font.SourceSans,
+			Text = "Antijail Inactive",
+			Color = Color3.fromRGB(255, 255, 255)
+		})
+	end
 end)
 
 CommandApi:AddCommand("rejoin", {"rj"}, function()
