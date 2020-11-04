@@ -1,18 +1,135 @@
 --[[
 	Epik admin by Nardo#4127 / NardoSusky20
 	Changelog: [
-		11/3/2020: [
-			Added 'glock'
+		11/4/2020: [
+			Added a loaded so its less confusing :smile:
 		]
 	]
 ]]
 
 local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+local HttpService = game:GetService("HttpService")
 local ME = Players.LocalPlayer
 local Connections = {}
 local CommandApi = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nxrdo/Atlas/master/CommandApi.lua"))()
 local RoLife = loadstring(game:HttpGet("https://raw.githubusercontent.com/Nxrdo/Atlas/master/RoLife.lua"))()
 local CMDs = {}
+-- // Loader \\ --
+local ScreenGui = Instance.new("ScreenGui")
+local Loader = Instance.new("ImageLabel")
+local TopBar = Instance.new("ImageLabel")
+local Title = Instance.new("TextLabel")
+local BHolder = Instance.new("Frame")
+local StatusBar = Instance.new("Frame")
+local CurrentStatus = Instance.new("TextLabel")
+
+ScreenGui.Parent = CoreGui
+
+Loader.Name = "Loader"
+Loader.Parent = ScreenGui
+Loader.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Loader.BackgroundTransparency = 1.000
+Loader.Position = UDim2.new(0.5, -180, -0.25, -80)
+Loader.Size = UDim2.new(0, 360, 0, 155)
+Loader.Image = "rbxassetid://3570695787"
+Loader.ImageColor3 = Color3.fromRGB(30, 30, 36)
+Loader.ScaleType = Enum.ScaleType.Slice
+Loader.SliceCenter = Rect.new(100, 100, 100, 100)
+Loader.SliceScale = 0.050
+
+TopBar.Name = "TopBar"
+TopBar.Parent = Loader
+TopBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TopBar.BackgroundTransparency = 1.000
+TopBar.Size = UDim2.new(1, 0, 0, 20)
+TopBar.Image = "rbxassetid://3570695787"
+TopBar.ImageColor3 = Color3.fromRGB(20, 20, 26)
+TopBar.ScaleType = Enum.ScaleType.Slice
+TopBar.SliceCenter = Rect.new(100, 100, 100, 100)
+TopBar.SliceScale = 0.050
+
+Title.Name = "Title"
+Title.Parent = TopBar
+Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Title.BackgroundTransparency = 1.000
+Title.Size = UDim2.new(1, 0, 1, 0)
+Title.Font = Enum.Font.Code
+Title.Text = "Nardo Admin - Loader"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextScaled = true
+Title.TextSize = 14.000
+Title.TextWrapped = true
+
+BHolder.Name = "BHolder"
+BHolder.Parent = Loader
+BHolder.BackgroundColor3 = Color3.fromRGB(20, 20, 26)
+BHolder.BorderSizePixel = 0
+BHolder.Position = UDim2.new(0.11, 0, 0.45, 0)
+BHolder.Size = UDim2.new(0.8, 0, 0, 30)
+
+StatusBar.Name = "StatusBar"
+StatusBar.Parent = BHolder
+StatusBar.BackgroundColor3 = Color3.fromRGB(85, 0, 255)
+StatusBar.BorderSizePixel = 0
+StatusBar.Size = UDim2.new(0, 0, 1, 0)
+
+CurrentStatus.Name = "CurrentStatus"
+CurrentStatus.Parent = Loader
+CurrentStatus.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+CurrentStatus.BackgroundTransparency = 1.000
+CurrentStatus.Position = UDim2.new(0.1, 0, 0.8, 0)
+CurrentStatus.Size = UDim2.new(0.8, 0, 0.1, 0)
+CurrentStatus.Font = Enum.Font.Code
+CurrentStatus.Text = ""
+CurrentStatus.TextColor3 = Color3.fromRGB(255, 255, 255)
+CurrentStatus.TextScaled = true
+CurrentStatus.TextSize = 14.000
+CurrentStatus.TextTransparency = 0.500
+CurrentStatus.TextWrapped = true
+
+wait(1)
+Loader:TweenPosition(UDim2.new(0.5, -180, 0.5, -80), "Out", "Quart", 0.25)
+wait(0.5)
+
+while not game:IsLoaded() do
+	CurrentStatus.Text = "Waiting for Roblox..."
+	wait(0.01)
+end
+
+if not pcall(function()
+	readfile("EpikAdmin/Theme.json")
+end) then
+	makefolder("EpikAdmin")
+	writefile("EpikAdmin/Theme.json", game:HttpGet("https://raw.githubusercontent.com/Nxrdo/Atlas/master/Theme_Api.json"))
+	TweenService:Create(StatusBar, TweenInfo.new(.25), {
+		Size = UDim2.new(.33, 0, 1, 0)
+	}):Play()
+	CurrentStatus.Text = "Writing file(s)..."
+	wait(1)
+else
+	local Colors = HttpService:JSONDecode(readfile("EpikAdmin/Theme.json"))
+	Loader.ImageColor3 = Color3.fromRGB(Colors.Main.BGColor.R, Colors.Main.BGColor.G, Colors.Main.BGColor.B)
+	TopBar.ImageColor3 = Color3.fromRGB(Colors.TopBar.BGColor.R, Colors.TopBar.BGColor.G, Colors.TopBar.BGColor.B)
+	StatusBar.BackgroundColor3 = Color3.fromRGB(Colors.StatusBar.BGColor.R, Colors.StatusBar.BGColor.G, Colors.StatusBar.BGColor.B)
+	TweenService:Create(StatusBar, TweenInfo.new(.25), {
+		Size = UDim2.new(.67, 0, 1, 0)
+	}):Play()
+	CurrentStatus.Text = "Initializing..."
+	wait(1)
+end
+
+TweenService:Create(StatusBar, TweenInfo.new(.25), {
+	Size = UDim2.new(1, 0, 1, 0)
+}):Play()
+CurrentStatus.Text = "Initialized!"
+wait(1)
+CurrentStatus.Text = "Prefix is ,"
+wait(1)
+Loader:TweenPosition(UDim2.new(0.5, -180, 1.25, -80), "Out", "Quart", 0.25)
+wait(0.5)
+ScreenGui:Destroy()
 -- // CommandBar \\ --
 local ScreenGui = Instance.new("ScreenGui")
 local cbh = Instance.new("Frame")
@@ -114,7 +231,7 @@ pcall(function()
 				Size = UDim2.new(1, 0, 0, 200)
 			}):Play()
 		end
-	end)        
+	end)
 end)
 
 CMDsH.Changed:Connect(function()
@@ -134,6 +251,7 @@ CMDs[#CMDs + 1] = {Name = ' ~~~~~~~~ Players ~~~~~~~~'}
 CMDs[#CMDs + 1] = {Name = ' ac <server | player, name>'}
 CMDs[#CMDs + 1] = {Name = ' kill <player> / k <player>'}
 CMDs[#CMDs + 1] = {Name = ' lkill <player> / lk <player>'}
+CMDs[#CMDs + 1] = {Name = ' goto <player>'}
 CMDs[#CMDs + 1] = {Name = ' ~~~~~~~~~ Local ~~~~~~~~~'}
 CMDs[#CMDs + 1] = {Name = ' antjail <on | off>'}
 CMDs[#CMDs + 1] = {Name = ' billboard'}
@@ -177,12 +295,6 @@ cmdbar:GetPropertyChangedSignal("Text"):Connect(function()
 	end
 end)
 -- // Main Script \\ --
-game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
-	Text = "Loading...",
-	Font = Enum.Font.SourceSans,
-	Color = Color3.fromRGB(255, 255, 255),
-	TextSize = 18
-})
 CommandApi:Initialize(",")
 game:GetService("ReplicatedStorage").ToggleStrollers:FireServer(false)
 print("Strollers Disabled")
@@ -220,7 +332,7 @@ CommandApi:AddCommand("billboard", function()
 	RoLife:FireServer("PompousTheCloud", ME.Character["14129625"]["Effect"], "Orientation", Vector3.new(0, -150, -90))
 	RoLife:FireServer("PompousTheCloud", ME.Character["14129625"]["Effect"], "Parent", workspace["Atlas Billboard"])
 	ME.Character["PhantomMask"]:Destroy()
-	ME.Character["14129625"]:Destroy()			
+	ME.Character["14129625"]:Destroy()
 end)
 
 CommandApi:AddCommand("bbvis", function(args)
@@ -258,7 +370,7 @@ CommandApi:AddCommand("bbvis", function(args)
 				RoLife:FireServer("PompousTheCloud", ME.Character["14129625"]["Handle"], "Size", Vector3.new(math.random(4, 10) * vol, math.random(4, 10) * vol, math.random(4, 10) * vol))
 				RoLife:FireServer("PompousTheCloud", ME.Character["14129625"]["Handle"]["Mesh"], "Scale", ME.Character["14129625"].Handle.Size)
 			end)
-		end)    
+		end)
 	elseif args[1] == "off" then
 		Connections['BoomboxVis']:Disconnect()
 		RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Wind"]:Pause())
@@ -348,8 +460,8 @@ CommandApi:AddCommand("kill", {"k"}, function(args)
 			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]:WaitForChild("EffectCloud"), "Name", "UpperTorso")
 			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"]:FindFirstChild("Weld"):Destroy())
 			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"], "CanCollide", false)
-			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"], "Parent", v.Character)   
-			ME.Character:WaitForChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = false })         
+			RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"], "Parent", v.Character)
+			ME.Character:WaitForChild("PompousTheCloud").ServerControl:InvokeServer("Fly", { Flying = false })
 		end
 	end
 end)
@@ -368,7 +480,7 @@ CommandApi:AddCommand("lkill", "lk", function(args)
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]:WaitForChild("EffectCloud"), "Name", "UpperTorso")
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"]:FindFirstChild("Weld"):Destroy())
 				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"], "CanCollide", false)
-				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"], "Parent", v.Character)   
+				RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["UpperTorso"], "Parent", v.Character)
 			end
 			wait()
 		end
@@ -395,23 +507,24 @@ CommandApi:AddCommand("unblind", function()
 end)
 
 CommandApi:AddCommand("glock", function()
+	ME.Backpack:FindFirstChild("PompousTheCloud").Parent = ME.Character
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Mesh"], "MeshId", "rbxassetid://5082833624")
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Mesh"], "TextureId", "rbxassetid://5082836430")
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Mesh"], "Scale", Vector3.new(1, 1, 1))
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Mesh"], "Offset", Vector3.new(0, 0, 0))
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["LocalScript"], "Disabled", true)
-						
+
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "GripForward", Vector3.new(0, 0, 1))
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "GripPos", Vector3.new(0, -0.25, -0.07))
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "GripRight", Vector3.new(-1, 0, 0))
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "GripUp", Vector3.new(0, 1, 0))
-						
+
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Wind"], "MaxDistance", "100000")
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Wind"], "PlaybackSpeed", "1")
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Wind"], "Volume", "1")
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Wind"], "EmitterSize", "1000")
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"]["Handle"]["Wind"], "SoundId", "rbxassetid://240718012")
-						
+
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "ToolTip", "Glock-18")
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "CanBeDropped", true)
 	RoLife:FireServer("PompousTheCloud", ME.Character["PompousTheCloud"], "Name", "Glock-18")
@@ -468,10 +581,11 @@ CommandApi:AddCommand("antijail", function(args)
 				end
 			end)
 		end
-		
+
 		Antijail()
 	elseif args[1] == "off" then
 		Connections['Antijail']:Disconnect()
+		Connections['Antijail'] = nil
 		game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
 			Font = Enum.Font.SourceSans,
 			Text = "Antijail Inactive",
@@ -483,10 +597,3 @@ end)
 CommandApi:AddCommand("rejoin", {"rj"}, function()
 	game:GetService("TeleportService"):Teleport(game.PlaceId)
 end)
-
-game:GetService("StarterGui"):SetCore("ChatMakeSystemMessage", {
-	Text = "Epik Admin loaded!",
-	Font = Enum.Font.SourceSans,
-	Color = Color3.fromRGB(255, 255, 255),
-	TextSize = 18
-})
