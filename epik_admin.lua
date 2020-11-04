@@ -547,7 +547,7 @@ CommandApi:AddCommand("glock", function()
 					ME.Character["14129625"]:Destroy()
 					ME.Character["PhantomMask"]:Destroy()
 					RoLife:FireServer("Glock-18", ME.Character["Glock-18"]["Handle"]["Wind"], "Playing", true)
-					wait(1)
+					wait(ME.Character["Glock-18"].Handle.Wind.TimeLength)
 					RoLife:FireServer("Glock-18", ME.Character["Glock-18"]["Handle"]["Wind"]:Pause())
 				else
 					RoLife:FireServer("Glock-18", ME.Character:WaitForChild("14129625")["Handle"]["Mesh"], "MeshId", "0")
@@ -556,7 +556,7 @@ CommandApi:AddCommand("glock", function()
 					ME.Character["14129625"]:Destroy()
 					ME.Character["PhantomMask"]:Destroy()
 					RoLife:FireServer("Glock-18", ME.Character["Glock-18"]["Handle"]["Wind"], "Playing", true)
-					wait(1)
+					wait(ME.Character["Glock-18"].Handle.Wind.TimeLength)
 					RoLife:FireServer("Glock-18", ME.Character["Glock-18"]["Handle"]["Wind"]:Pause())
 				end
 			end
